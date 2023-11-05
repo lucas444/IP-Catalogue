@@ -3,7 +3,7 @@
 Vous allez créer un utilitaire permettant de cataloguer les adresses IP(v4).
 L'utilitaire doit permettre de:
 
-1. Stocker des adresses IP, et les changer au lancement
+1. Stocker des adresses IP, et les charger au lancement
 2. Filtrer les adresses via un masque
 3. Afficher une adresse IP sous sa forme binaire, hexa, ou décimale
 4. Une validation doit être mise en place
