@@ -7,7 +7,7 @@ struct reseaux {
 
 int main (void){
 
-	struct reseaux ip = {{192, 168, 1, 1 }};
+	struct reseaux ip = {{1,1,1,1}};
 	
 	printf("test ip : %d.%d.%d.%d\n", ip.ipv4[0], ip.ipv4[1], ip.ipv4[2], ip.ipv4[3] );
 
