@@ -28,7 +28,7 @@ void ajout_ip(){
     if(fp != NULL){
 
         //ecriture dans le fichier ip.txt
-        if(fprintf(fp,"%d.%d.%d.%d/%d.%d.%d.%d \n", ip.ipv4[0], ip.ipv4[1], ip.ipv4[2], ip.ipv4[3], ip.mask[0], ip.mask[1], ip.mask[2], ip.mask[3])){
+        if(fprintf(fp,"%d.%d.%d.%d %d.%d.%d.%d \n", ip.ipv4[0], ip.ipv4[1], ip.ipv4[2], ip.ipv4[3], ip.mask[0], ip.mask[1], ip.mask[2], ip.mask[3])){
             printf("IP Ajouté au fichier ip.txt\n");
 
         }
@@ -45,29 +45,36 @@ void ajout_ip(){
 
 int liste_ip(){
 
+    int i = 1;
+	struct reseaux ip;
+    char valeur = 0;
+    int test; 
+
+
     //ouvre le fichier ip.txt
     FILE * fp = NULL;
     fp = fopen("ip.txt", "r");
 
-    
-    char valeur = 0;
-
 
     if(fp != NULL ){
         
-        //boucle qui ecrit les caractère du fichier un à un jusqu'au dernier
+        //boucle qui ecrit ligne par ligne 
         printf("\nVoici la liste des ip : \n\n");
-        while((valeur = fgetc(fp))!=EOF){
-
-            printf("%c", valeur);
+        while(fscanf(fp, "%d.%d.%d.%d %d.%d.%d.%d", &ip.ipv4[0],&ip.ipv4[1], &ip.ipv4[2], &ip.ipv4[3],&ip.mask[0], &ip.mask[1], &ip.mask[2], &ip.mask[3] )!= EOF)
+        
+        {
+            printf("IP numéro %d : %d.%d.%d.%d %d.%d.%d.%d \n", i, ip.ipv4[0], ip.ipv4[1], ip.ipv4[2], ip.ipv4[3], ip.mask[0], ip.mask[1], ip.mask[2], ip.mask[3]);
+            i++;
         }
     }
+
 
     //message d'erreur si le fichier ne s'ouvre pas et ferme le programe
     else{
         printf("Impossible d'ouvrir le fichier\n");
         exit(1);
     }  
+
     fclose(fp); 
 
 }
