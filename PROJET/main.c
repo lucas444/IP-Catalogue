@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-
 struct reseaux {
 	int ipv4[4];
     int mask[4];
@@ -35,10 +34,42 @@ void ajout_ip(){
         }
 
     }
+    
+    //message d'erreur si le fichier ne s'ouvre pas et ferme le programe
     else{
         printf("Impossible d'ouvrir le fichier\n");
+        exit(1);
     }  
     fclose(fp);
+}
+
+int liste_ip(){
+
+    //ouvre le fichier ip.txt
+    FILE * fp = NULL;
+    fp = fopen("ip.txt", "r");
+
+    
+    char valeur = 0;
+
+
+    if(fp != NULL ){
+        
+        //boucle qui ecrit les caractère du fichier un à un jusqu'au dernier
+        printf("\nVoici la liste des ip : \n\n");
+        while((valeur = fgetc(fp))!=EOF){
+
+            printf("%c", valeur);
+        }
+    }
+
+    //message d'erreur si le fichier ne s'ouvre pas et ferme le programe
+    else{
+        printf("Impossible d'ouvrir le fichier\n");
+        exit(1);
+    }  
+    fclose(fp); 
+
 }
 
 int menuPrincipal(void) {
@@ -58,6 +89,10 @@ int main(){
     switch (menuPrincipal()) {
         case 1 : 
         ajout_ip();
+        break;
+        case 2 :
+        liste_ip();
+        break;
 }
 
 
