@@ -8,49 +8,36 @@ struct reseaux {
     int mask[4];
 };
 
-void fichier_ecriture(FILE *f,int ipv4[4]){
-
-    //ecriture dans le fichier ip.txt
-    fprintf(f, "%d.%d.%d.%d\n", ipv4[0], ipv4[1], ipv4[2], ipv4[3]);
-    printf("Je suis arrivé jusqu'ici");
-    printf(" avec cette ip : %d.%d.%d.%d\n", ipv4[0], ipv4[1], ipv4[2], ipv4[3] );
-}
-
 void ajout_ip(){
 	
 	struct reseaux ip;
-	bool verif = false;
 
 
-    //sasie de la nouvelle ip
+    //sasie de la nouvelle ip + mask
 	printf("Saisir une ip : \n");
 	scanf("%d.%d.%d.%d", &ip.ipv4[0], &ip.ipv4[1], &ip.ipv4[2], &ip.ipv4[3]);		
-	// printf("Saisir son masque : \n");
-	// scanf("%d.%d.%d.%d", &ip.mask[0], &ip.mask[1], &ip.mask[2], &ip.mask[3]);
-       
-	printf("test ip : %d.%d.%d.%d\n", ip.ipv4[0], ip.ipv4[1], ip.ipv4[2], ip.ipv4[3] );
-
+	printf("Saisir son masque : \n");
+	scanf("%d.%d.%d.%d", &ip.mask[0], &ip.mask[1], &ip.mask[2], &ip.mask[3]);
 
     //ouverture du fichier ip.txt
-    FILE *fp = fopen("ip.txt", "w");
-    if (fp == NULL)
-    {
-        printf("Le fichier texte.txt n'a pas pu être ouvert\n");
-        exit(1);
+    FILE * fp = NULL;
+    fp = fopen("ip.txt", "a");
+
+    char txt_ip[10] ="ip : ";
+    char txt_mask[10] ="mask : ";
+    
+    if(fp != NULL){
+
+        //ecriture dans le fichier ip.txt
+        if(fprintf(fp,"%d.%d.%d.%d/%d.%d.%d.%d \n", ip.ipv4[0], ip.ipv4[1], ip.ipv4[2], ip.ipv4[3], ip.mask[0], ip.mask[1], ip.mask[2], ip.mask[3])){
+            printf("IP Ajouté au fichier ip.txt\n");
+
+        }
+
     }
-
-    printf("Le fichier ip.txt existe\n");
-
-    if (fclose(fp) == EOF)
-    {
-        printf("Erreur lors de la fermeture du flux\n");
-        exit(1);      
-    }
-
-    //ecriture dans le fichier ip.txt
-    fichier_ecriture(fp, ip.ipv4);
-
-    //fermeture du fichier ip.txt   
+    else{
+        printf("Impossible d'ouvrir le fichier\n");
+    }  
     fclose(fp);
 }
 
