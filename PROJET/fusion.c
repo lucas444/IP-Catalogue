@@ -51,6 +51,11 @@ int main() {
             bytes++;                                    
             printf("bytes est a : %d\n", bytes);            
         }
+        while (bytes < 8)
+        {
+            reverseBinaryNumber[octet][bytes]=0;
+            bytes++;
+        }        
         bytes=0;        
         printf("\nLe nombre binaire est : \n");
         for (int emplacement = 0; emplacement < 8; emplacement++)
