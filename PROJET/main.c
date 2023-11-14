@@ -184,22 +184,28 @@ int menuPrincipal(void) {
 }
 
 int main(){
-    switch (menuPrincipal()) {
 
-        case 1 : 
-        ajout_ip();
-        break;
-
-        case 2 :
-        liste_ip();
-        break;
-
-        case 4 :
-        supp_ip();
-        break;
+    int boul = 0;
+    while (boul == 0)
+    {
+        switch (menuPrincipal()) {
+            case 1 : 
+                ajout_ip();
+                break;
+            case 2 :
+                liste_ip();
+                break;
+            case 3 :
+                liste_ip();
+                break;
+            case 4 :
+                liste_ip();
+                break;
+            case 5 :
+                printf("Au revoir !");
+                boul = 1;
+                break;
+        }
     }
-
-
-
     return 0;
 }
