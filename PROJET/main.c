@@ -8,6 +8,59 @@ struct reseaux {
 	int ipv4[4];
     int mask[4];
 };
+int filtrage_ip(){
+
+    //Variable 
+    int i;
+    struct reseaux target;
+    struct binaire bip;
+
+    //sasie de la nouvelle ip + mask
+    printf("Saisir une ip : \n");
+    scanf("%d.%d.%d.%d", &target.ipv4[0], &target.ipv4[1], &target.ipv4[2], &target.ipv4[3]);
+
+    // convertion binaire 
+    for(i=0;i < 4;i++)
+    {
+        printf("i : %d\n", i);
+        while (target.ipv4[i] > 0)
+        {
+            for (int j = 0; j < 7; j++)
+            {
+                printf("j : %d\n", j);
+                printf("Binary to add : %d\n", target.ipv4[i]%2);
+                bip.b[i][j]=target.ipv4[i]%2;
+                target.ipv4[i]/=2;
+                printf("Reste : %d\n", target.ipv4[i]);
+            }
+        }
+    }
+    // Print table
+    printf("\nBinary number in reverse version=");
+    for(i=0;i<4;i++)
+    {
+        printf("\n");
+        for (int j = 0; j < 7; j++)
+        {
+            printf("%d",bip.b[i][j]);
+        }
+    }
+
+    // Revert
+    printf("\nBinary number=");
+    for(i=4;i<0;i--)
+    {
+        printf("i: %d", i);
+        printf("\n");
+        for (int j = 7; j < 0; j--)
+        {
+            printf("j: %d", j);
+            printf("%d",bip.b[i][j]);
+        }
+    }
+
+    return 0;
+}
 
 int verification(char ipv4[], char mask[]){
     int verif = 0;
@@ -196,10 +249,10 @@ int main(){
                 liste_ip();
                 break;
             case 3 :
-                liste_ip();
+                filtrage_ip();
                 break;
             case 4 :
-                liste_ip();
+                supp_ip();
                 break;
             case 5 :
                 printf("Au revoir !");
