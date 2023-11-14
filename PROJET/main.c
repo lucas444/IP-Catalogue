@@ -1,56 +1,85 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
+#include <ctype.h>
+#include <string.h>
+
 
 struct reseaux {
 	int ipv4[4];
     int mask[4];
 };
 
-int verification(int a,int b, int c, int d){
-    printf("on est la %d.%d.%d.%d\n", a,b,c,d);
+int verification(char ipv4[], char mask[]){
     int verif = 0;
 
-if(a < 256 && b < 256 && c < 256 && d < 256 && a >= 0 && b >= 0 && c >= 0 && d >= 0){
-verif = 1;
-}
-printf("\nyes %d\n",verif);
-
-return verif;
+    for (int i = 0; i < (strlen(ipv4)); i++) {   
+        
+        //vérrifie qu'il s'agit bien de nombre
+        if ((!isdigit(ipv4[i])!=0)) {
+            if(!(ipv4[i] == (46))){
+                printf("Invalid IP address ICI !!\n");
+                printf("erreur ici %c\n", ipv4[i]);
+                verif = 1;
+            }
+        }
+    }
+    
+    // vérifie que le valeur son entre 0 et 255
+    if((ipv4[0] < 0) && (ipv4[0] > 255) &&
+    (ipv4[1] < 0) && (ipv4[1] > 255) &&
+    (ipv4[2] < 0) && (ipv4[2] > 255) &&
+    (ipv4[3] < 0) && (ipv4[3] > 255)){
+        printf("Invalid IP address\n");
+        verif = 1;
+    }
+    
+    //vérrifie qu'il s'agit bien de nombre
+    for (int i = 0; i < (strlen(mask)); i++) {
+    if ((!isdigit(mask[i])!=0)) {
+        if(!(mask[i] == (46))){
+            printf("Invalid mask LA !!\n");
+            printf("erreur LA %c\n", mask[i]);
+            verif = 1;
+        }
+    }
+    }
+    // vérifie que le valeur son entre 0 et 255
+    if((mask[0] < 0) && (mask[0] > 255) &&
+    (mask[1] < 0) && (mask[1] > 255) &&
+    (mask[2] < 0) && (mask[2] > 255) &&
+    (mask[3] < 0) && (mask[3] > 255)){
+        printf("Invalid mask !\n");
+        verif = 1;
+    }
+    return verif; 
 }
 
 void ajout_ip(){
-	
-	struct reseaux ip;
 
+    struct reseaux ip;
 
-    //sasie de la nouvelle ip + mask
-	printf("Saisir une ip : \n");
-	scanf("%d.%d.%d.%d", &ip.ipv4[0], &ip.ipv4[1], &ip.ipv4[2], &ip.ipv4[3]);		
-	// printf("Saisir son masque : \n");
-	// scanf("%d.%d.%d.%d", &ip.mask[0], &ip.mask[1], &ip.mask[2], &ip.mask[3]);
+    char c_ip[50];
+    char c_mask[50];
 
-    while((verification(ip.ipv4[0], ip.ipv4[1], ip.ipv4[2], ip.ipv4[3]))!=1){
-        printf("\nIp saisie non valide. \n\nExemple: \nafs.213.sf.23ew // Invalide\n300.192.1.2     // Invalide\n-12.23.12.23    // Invalide\n172.45.223..1    // Invalide\n192.168.1.1     //valide\n\nSaisir une ip : \n");
-        ip.ipv4[0]=400;
-        ip.ipv4[1]=300;
-        ip.ipv4[2]=300;
-        ip.ipv4[3]=0300;
-        printf("%d.%d.%d.%d %d.%d.%d.%d \n", ip.ipv4[0], ip.ipv4[1], ip.ipv4[2], ip.ipv4[3], ip.mask[0], ip.mask[1], ip.mask[2], ip.mask[3]);
-        scanf("%d.%d.%d.%d", &ip.ipv4[0], &ip.ipv4[1], &ip.ipv4[2], &ip.ipv4[3]);
+    printf("Saisir une ip  \n");
+    scanf("%s", c_ip);
+    printf("Saisir un mask  \n");
+    scanf("%s", c_mask);
+
+    //lance la vérification et redemande une ip si echec
+    if(!verification(c_ip, c_mask)!=1){
+        printf("\n\n Erreur, ip non comforme \n\n");
+        ajout_ip();
     }
 
     //ouverture du fichier ip.txt
     FILE * fp = NULL;
     fp = fopen("ip.txt", "a");
-
-    char txt_ip[10] ="ip : ";
-    char txt_mask[10] ="mask : ";
     
     if(fp != NULL){
 
         //ecriture dans le fichier ip.txt
-        if(fprintf(fp,"%d.%d.%d.%d %d.%d.%d.%d \n", ip.ipv4[0], ip.ipv4[1], ip.ipv4[2], ip.ipv4[3], ip.mask[0], ip.mask[1], ip.mask[2], ip.mask[3])){
+        if(fprintf(fp,"%s/%s \n", c_ip, c_mask)){
             printf("IP Ajouté au fichier ip.txt\n");
 
         }
@@ -79,10 +108,8 @@ int liste_ip(){
         
         //boucle qui ecrit ligne par ligne 
         printf("\nVoici la liste des ip : \n\n");
-        while(fscanf(fp, "%d.%d.%d.%d %d.%d.%d.%d", &ip.ipv4[0],&ip.ipv4[1], &ip.ipv4[2], &ip.ipv4[3],&ip.mask[0], &ip.mask[1], &ip.mask[2], &ip.mask[3] )!= EOF)
-        
-        {
-            printf("ID %d : %d.%d.%d.%d %d.%d.%d.%d \n", i, ip.ipv4[0], ip.ipv4[1], ip.ipv4[2], ip.ipv4[3], ip.mask[0], ip.mask[1], ip.mask[2], ip.mask[3]);
+        while(fscanf(fp, "%d.%d.%d.%d/%d.%d.%d.%d", &ip.ipv4[0],&ip.ipv4[1], &ip.ipv4[2], &ip.ipv4[3],&ip.mask[0], &ip.mask[1], &ip.mask[2], &ip.mask[3] )!= EOF){
+            printf("ID %d : %d.%d.%d.%d/%d.%d.%d.%d \n", i, ip.ipv4[0], ip.ipv4[1], ip.ipv4[2], ip.ipv4[3], ip.mask[0], ip.mask[1], ip.mask[2], ip.mask[3]);
             i++;
         }
     }
@@ -126,13 +153,13 @@ void supp_ip(){
     scanf("%d", &ip_choisi);
 
     //boucle qui lit le fichier ip.txt
-    while(fscanf(fp, "%d.%d.%d.%d %d.%d.%d.%d", &ip.ipv4[0],&ip.ipv4[1], &ip.ipv4[2], &ip.ipv4[3],&ip.mask[0], &ip.mask[1], &ip.mask[2], &ip.mask[3])== 8){  
+    while(fscanf(fp, "%d.%d.%d.%d/%d.%d.%d.%d", &ip.ipv4[0],&ip.ipv4[1], &ip.ipv4[2], &ip.ipv4[3],&ip.mask[0], &ip.mask[1], &ip.mask[2], &ip.mask[3])== 8){  
 
         i++;
 
         //rééctit tout les ligne dans un fichier temp SI il son différent de l'id choisi
         if(i != ip_choisi){
-            fprintf(temp,"%d.%d.%d.%d %d.%d.%d.%d \n", ip.ipv4[0], ip.ipv4[1], ip.ipv4[2], ip.ipv4[3], ip.mask[0], ip.mask[1], ip.mask[2], ip.mask[3]);
+            fprintf(temp,"%d.%d.%d.%d/%d.%d.%d.%d \n", ip.ipv4[0], ip.ipv4[1], ip.ipv4[2], ip.ipv4[3], ip.mask[0], ip.mask[1], ip.mask[2], ip.mask[3]);
         }
         else
         printf("l'ip a bien été supprimer\n");
