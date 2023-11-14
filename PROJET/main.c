@@ -7,6 +7,18 @@ struct reseaux {
     int mask[4];
 };
 
+int verification(int a,int b, int c, int d){
+    printf("on est la %d.%d.%d.%d\n", a,b,c,d);
+    int verif = 0;
+
+if(a < 256 && b < 256 && c < 256 && d < 256 && a >= 0 && b >= 0 && c >= 0 && d >= 0){
+verif = 1;
+}
+printf("\nyes %d\n",verif);
+
+return verif;
+}
+
 void ajout_ip(){
 	
 	struct reseaux ip;
@@ -15,8 +27,18 @@ void ajout_ip(){
     //sasie de la nouvelle ip + mask
 	printf("Saisir une ip : \n");
 	scanf("%d.%d.%d.%d", &ip.ipv4[0], &ip.ipv4[1], &ip.ipv4[2], &ip.ipv4[3]);		
-	printf("Saisir son masque : \n");
-	scanf("%d.%d.%d.%d", &ip.mask[0], &ip.mask[1], &ip.mask[2], &ip.mask[3]);
+	// printf("Saisir son masque : \n");
+	// scanf("%d.%d.%d.%d", &ip.mask[0], &ip.mask[1], &ip.mask[2], &ip.mask[3]);
+
+    while((verification(ip.ipv4[0], ip.ipv4[1], ip.ipv4[2], ip.ipv4[3]))!=1){
+        printf("\nIp saisie non valide. \n\nExemple: \nafs.213.sf.23ew // Invalide\n300.192.1.2     // Invalide\n-12.23.12.23    // Invalide\n172.45.223..1    // Invalide\n192.168.1.1     //valide\n\nSaisir une ip : \n");
+        ip.ipv4[0]=400;
+        ip.ipv4[1]=300;
+        ip.ipv4[2]=300;
+        ip.ipv4[3]=0300;
+        printf("%d.%d.%d.%d %d.%d.%d.%d \n", ip.ipv4[0], ip.ipv4[1], ip.ipv4[2], ip.ipv4[3], ip.mask[0], ip.mask[1], ip.mask[2], ip.mask[3]);
+        scanf("%d.%d.%d.%d", &ip.ipv4[0], &ip.ipv4[1], &ip.ipv4[2], &ip.ipv4[3]);
+    }
 
     //ouverture du fichier ip.txt
     FILE * fp = NULL;
